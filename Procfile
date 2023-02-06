@@ -1,1 +1,1 @@
-web: python manage.py startapp home
+web: python manage.py startapp home && python manage.py migrate && gunicorn mysite.wsgi
