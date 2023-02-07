@@ -390,35 +390,18 @@
    
       }
 
-      function formatDate(dateString) {
+      var formatDate = function (dateString) {
         var date = new Date(dateString);
 
-        if (date.toString() === "Invalid Date") {
-          return "";
+        if (date.toString() === 'Invalid Date') {
+          return '';
         }
 
-        date.setHours(date.getHours() - 3); // gmt+3
+        var formattedMinutes = ('0' + date.getMinutes()).slice(-2);
+        var formattedHours = ('0' + date.getHours()).slice(-2);
 
-        var dateObj = {
-          year: date.getFullYear(),
-          month: date.getMonth() + 1,
-          day: date.getDate(),
-          hour: date.getHours(),
-          mins: date.getMinutes(),
-        };
-
-        return (
-          dateObj.hour +
-          ":" +
-          dateObj.mins +
-          " - " +
-          dateObj.day +
-          "/" +
-          dateObj.month +
-          "/" +
-          dateObj.year
-        );
-      }
+        return `${formattedHours}:${formattedMinutes} - ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+      };
 
       function mapStatus(status) {
         switch (status) {
