@@ -281,7 +281,7 @@
     <!------ E: ANASAYFA ------>
 
     <!----- KAYIT SAYFASI ---->
-    <form action="report" method="post">
+    <form action="report" class="hidden" method="post">
       {% csrf_token %}
 
       <div class="form-input">
@@ -351,7 +351,7 @@
     <!----- E: KAYIT SAYFASI ---->
 
     <!----- ARAMA SAYFASI ---->
-    <div class="search-list">
+    <div class="search-list hidden">
       <div class="form-input">
         <label>İsim Soyisim</label>
         <input
@@ -378,8 +378,15 @@
       var listElement = document.getElementById("card__container");
 
       function show(selector) {
-        document.querySelector(selector).classList.add("open");
-        document.querySelector(".selector").classList.add("hidden");
+            if(selector =="form"){
+        document.querySelector("form").classList.toggle("open")
+        document.querySelector(".search-list").classList.remove("open")
+      }
+      else{
+        document.querySelector(".search-list").classList.toggle("open")
+        document.querySelector("form").classList.remove("open")
+      }
+   
       }
 
       function formatDate(dateString) {
