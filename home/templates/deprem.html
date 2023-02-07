@@ -432,7 +432,7 @@
         }
       }
 
-      function generateCard({ isim, sehir, adres, durum, tarih }) {
+      function generateCard({ isim, sehir, adres, durum, created_at }) {
         return `
           <div class="card">
             <div class="card__status bold ${mapStatus(durum)}">${durum}</div>
@@ -443,7 +443,7 @@
             <div class="card__details">
               <span class="bold">Adres:</span>
               <var>${adres}</var>
-              <span class="date">${formatDate(tarih)}</span>
+              <span class="date">${formatDate(created_at)}</span>
             </div>
           </div>
         `;
@@ -475,8 +475,8 @@
             returnData.push(data);
             var searchList = "";
             returnData[0].forEach(function (key, index) {
-              var { isim, sehir, adres, durum, tarih } = key.fields;
-              searchList += generateCard({ isim, sehir, adres, durum, tarih });
+              var { isim, sehir, adres, durum, created_at } = key.fields;
+              searchList += generateCard({ isim, sehir, adres, durum, created_at });
             });
             listElement.innerHTML = searchList;
           });
