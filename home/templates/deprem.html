@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ben İyiyim</title>
+    <style>
+      *,
+      *::after,
+      *::before {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        font-family: sans-serif;
+        font-size: 16px;
+        line-height: 1.4;
+        color: #747474;
+      }
+
+      /*** GENERICS ***/
+      .bold {
+        color: #595959;
+        font-weight: bold;
+      }
+
+      /*** CARD ***/
+      .card {
+        border-radius: 5px;
+        box-shadow: 0 0 10px 3px #e8e8e8;
+      }
+
+      #card__container {
+        padding: 20px 15px;
+      }
+
+      .card__container .card:not(:last-child) {
+        margin-bottom: 15px;
+      }
+      /*** STATUS BAR ***/
+      .card > .card__status {
+        color: white;
+        font-weight: bold;
+        padding: 3px 0;
+        text-align: center;
+        border-radius: 5px 5px 0 0;
+        background-color: red;
+      }
+
+      .card > .card__status.success {
+        background-color: #41a303;
+      }
+      .card > .card__status.warning {
+        background-color: #ffc400;
+      }
+      .card > .card__status.danger {
+        background-color: #ff0000;
+      }
+      /*** E: STATUS BAR ***/
+
+      /*** HEADER ***/
+      .card__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 5px 10px;
+        border-bottom: 1px solid #dddddd;
+      }
+      /*** E: HEADER ***/
+
+      /*** DETAILS ***/
+      .card__details {
+        padding: 5px 10px;
+      }
+
+      .card__details > var {
+        display: block;
+        text-decoration: none;
+        font-style: normal;
+      }
+      /*** E: DETAILS ***/
+      /*** E: CARD ***/
+
+      body {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      h3 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .form-input label {
+        text-align: left;
+        width: 100%;
+        display: block;
+        font-size: 18px;
+        padding-bottom: 4px;
+      }
+
+      .form-input + .form-input {
+        margin-top: 20px;
+        width: 100%;
+      }
+
+      * {
+        font-family: sans-serif;
+      }
+
+      form,
+      .search-list {
+        width: 90%;
+        max-width: 500px;
+      }
+
+      .form-input input,
+      .form-input select,
+      .form-input textarea {
+        padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .form-input {
+        margin-bottom: 10px;
+      }
+
+      input,
+      select,
+      textarea {
+        background: #ffffff;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        border: none;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+      }
+
+      textarea {
+        height: 70px;
+      }
+
+      input[type="submit"],
+      .selector button,
+      .arama-butonu {
+        background: #0a7b31;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+        padding: 15px;
+        border: none;
+        display: block;
+        width: 100%;
+      }
+
+      form,
+      .search-list {
+        display: none;
+      }
+
+      form.open,
+      .search-list.open {
+        display: block;
+      }
+
+      .selector {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        max-width: 500px;
+        padding: 30px;
+        gap: 30px;
+      }
+
+      .selector.hidden {
+        display: none;
+      }
+
+      .selector button {
+        width: 100%;
+        border: none;
+        padding: 20px;
+      }
+
+      .selector button.depremzede {
+        background-color: #8e1b07;
+      }
+
+      .selector button.depremzede-yakini {
+        background-color: #c14d0a;
+      }
+
+      @media (max-width: 500px) {
+        h3 {
+          font-size: 16px;
+          margin-top: 0;
+        }
+      }
+      .search-list-unit {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+
+        gap: 10px;
+      }
+
+      .search-result {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+        width: 200px;
+      }
+
+      .data {
+        display: flex;
+        flex-wrap: wrap;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h3>
+      Beniyiyim.com, yalnızca depremzedeler ve yakınlarının haberleşmesini
+      sağlamak için kullanılmaktadır.
+    </h3>
+
+    <div class="selector">
+      <button class="depremzede" onclick="show('form')">DEPREMZEDEYİM</button>
+      <button class="depremzede-yakini" onclick="show('.search-list')">
+        DEPREMZEDE YAKINIYIM
+      </button>
+    </div>
+
+    <form action="report" method="post">
+      {% csrf_token %}
+
+      <div class="form-input">
+        <label for="input-isim">İsim</label
+        ><input
+          id="input-isim"
+          type="text"
+          placeholder="İsim yazınız."
+          name="isim"
+        />
+      </div>
+      <div class="form-input">
+        <label for="input-sehir">Sehir</label>
+        <select name="sehir" id="input-sehir">
+          <option value disabled hidden selected>Şehir Seçiniz</option>
+          <option value="Kahramanmaraş">Kahramanmaraş</option>
+          <option value="Gaziantep">Gaziantep</option>
+          <option value="Malatya">Malatya</option>
+          <option value="Batman">Batman</option>
+          <option value="Bingöl">Bingöl</option>
+          <option value="Elazığ">Elazığ</option>
+          <option value="Kilis">Kilis</option>
+          <option value="Diyarbakır">Diyarbakır</option>
+          <option value="Mardin">Mardin</option>
+          <option value="Siirt">Siirt</option>
+          <option value="Şırnak">Şırnak</option>
+          <option value="Van">Van</option>
+          <option value="Muş">Muş</option>
+          <option value="Bitlis">Bitlis</option>
+          <option value="Hakkari">Hakkari</option>
+          <option value="Adana">Adana</option>
+          <option value="Osmaniye">Osmaniye</option>
+          <option value="Hatay">Hatay</option>
+        </select>
+      </div>
+      <div class="form-input">
+        <label for="input-adres">Adres</label
+        ><input
+          id="input-adres"
+          type="text"
+          name="adres"
+          placeholder="Adres ekleyiniz."
+        />
+      </div>
+      <div class="form-input">
+        <label for="input-durum">Durum</label>
+        <select name="durum" id="input-durum">
+          <option value disabled hidden selected>Durum Seçiniz</option>
+          <option value="iyiyim">İyiyim</option>
+          <option value="enkaz-altinda-degilim-fakat-yardima-ihtiyacim-var">
+            Enkaz altında değilim fakat yardıma ihtiyacım var.
+          </option>
+          <option value="enkaz-altindayim">Enkaz altındayım.</option>
+        </select>
+      </div>
+      <div class="form-input">
+        <label for="input-tel">Telefon</label
+        ><input
+          id="input-tel"
+          type="tel"
+          name="tel"
+          placeholder="Telefon ekleyiniz (Örn: 05XXXXXXXXX)."
+        />
+      </div>
+      <div class="form-input"><input type="submit" value="Gönder" /></div>
+    </form>
+
+    <div class="search-list">
+      <div class="form-input">
+        <label>İsim Soyisim</label>
+        <input
+          type="text"
+          id="searchInputName"
+          placeholder="İsim Soyisim arama"
+        />
+      </div>
+      <div class="form-input">
+        <label>Telefon Numarası</label>
+        <input type="tel" id="searchInputTel" placeholder="Örn: 05XXXXXXXXX" />
+      </div>
+      <div class="form-input">
+        <button type="button" class="arama-butonu" onclick="searchThis()">
+          Ara
+        </button>
+      </div>
+    </div>
+    <div id="card__container"></div>
+    <script>
+      function show(selector) {
+        document.querySelector(selector).classList.add("open");
+        document.querySelector(".selector").classList.add("hidden");
+      }
+
+      var nameInput = document.getElementById("searchInputName");
+      var telInput = document.getElementById("searchInputTel");
+      var listElement = document.getElementById("card__container");
+      function searchThis() {
+        var nameVal = "";
+        var telVal = "";
+        if (
+          nameInput.value !== null ||
+          nameInput.value !== undefined ||
+          nameInput.value !== ""
+        ) {
+          nameVal += "isim=" + nameInput.value;
+        }
+        if (telInput.value.length > 8) {
+          telVal += "tel=" + telInput.value;
+        }
+        var returnData = [];
+        let obj = fetch(
+          "https://ben-yiyim-django-production.up.railway.app/search?" +
+            nameVal +
+            "&" +
+            telVal,
+          { mode: "no-cors" }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            returnData.push(data);
+            var searchList = "";
+            returnData[0].forEach(function (key, index) {
+              var { isim, sehir, adres, durum, tarih } = key.fields;
+              searchList += generateCard({ isim, sehir, adres, durum, tarih });
+            });
+            listElement.innerHTML = searchList;
+          });
+      }
+
+      function formatDate(dateString) {
+        var date = new Date(dateString);
+
+        if (date.toString() === "Invalid Date") {
+          return "";
+        }
+
+        date.setHours(date.getHours() - 3); // gmt+3
+
+        var dateObj = {
+          year: date.getFullYear(),
+          month: date.getMonth() + 1,
+          day: date.getDate(),
+          hour: date.getHours(),
+          mins: date.getMinutes(),
+        };
+
+        return (
+          dateObj.hour +
+          ":" +
+          dateObj.mins +
+          " - " +
+          dateObj.day +
+          "/" +
+          dateObj.month +
+          "/" +
+          dateObj.year
+        );
+      }
+
+      function mapStatus(status) {
+        switch (status) {
+          case "iyiyim":
+            return "success";
+          case "enkaz-altinda-degilim-fakat-yardima-ihtiyacim-var":
+            return "warning";
+          case "enkaz-altindayim":
+            return "danger";
+          default:
+            return "success";
+        }
+      }
+
+      var generateCard = ({ isim, sehir, adres, durum, tarih }) => `
+      <div class="card">
+          <div class="card__status bold ${mapStatus(durum)}">${durum}</div>
+          <div class="card__header">
+            <span class="bold">${isim}</span>
+            <span class="bold">${sehir}</span>
+          </div>
+          <div class="card__details">
+            <span class="bold">Adres:</span>
+            <var>${adres}</var>
+            <span class="date">${formatDate(tarih)}</span>
+          </div>
+        </div>
+      `;
+    </script>
+  </body>
+</html>
