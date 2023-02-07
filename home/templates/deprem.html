@@ -68,7 +68,7 @@
     }
 
     input[type="submit"],
-    .selector button {
+    .selector button, .arama-butonu {
       background: #0a7b31;
       color: #fff;
       font-weight: bold;
@@ -187,7 +187,7 @@
       <input type="text" id="searchInputTel" placeholder="Telefon arama">
     </div>
     <div class="form-input">
-        <button type="button" class="depremzede" onclick="searchThis()"></button>
+        <button type="button" class="arama-butonu" onclick="searchThis()">Ara</button>
     </div>
   </div>
     <div class="search-list-head">
@@ -221,16 +221,16 @@
         var telInput  = document.getElementById("searchInputTel");
         var listElement = document.getElementById("searchList");
         function searchThis() {
-            var nameVal = "";
+            var nameVal = "?isim=";
             var telVal = "";
             if(nameInput.value !== null || nameInput.value !== undefined || nameInput.value !== "") {
                 nameVal += nameInput.value;
             }
-            if(telInput.value !== null || telInput.value !== undefined || telInput.value !== "" || telInput.value.length < 6) {
-                telVal += telInput.value;
+            if(telInput.value !== null || telInput.value !== undefined || telInput.value !== "" || telInput.value.length < 9) {
+                telVal += "&tel=" + telInput.value;
             }
             var returnData = [];
-            let obj = fetch('https://ben-yiyim-django-production.up.railway.app/search?tel=' + telVal + '&isim=' + nameVal ,{mode: 'no-cors'}).then(response => response.json()).then(data => {
+            let obj = fetch('https://ben-yiyim-django-production.up.railway.app/search' + nameVal + telVal ,{mode: 'no-cors'}).then(response => response.json()).then(data => {
                 returnData.push(data);
             });
             console.log(returnData);
