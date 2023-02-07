@@ -49,7 +49,5 @@ def search(request):
                     reports = Person.objects.filter(tel__contains=request.GET.get('tel')).order_by('created_at')[:10]
                 else:
                     return HttpResponse("Telefon numarası en az 10 hane girilmeli.")
-            else:
-                reports = Person.objects.order_by('created_at')[:50]
         rlist = serialize('json', reports, fields=["isim", "sehir", "adres", "durum", "created_at"])
         return HttpResponse(rlist)
