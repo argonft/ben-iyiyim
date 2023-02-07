@@ -69,4 +69,4 @@ def search(request):
             else:
                 return HttpResponse("Arama yapmak için veri girişi yapın.")
         rlist = serialize('json', reports, fields=["isim", "sehir", "adres", "durum", "created_at"])
-        return JsonResponse(rlist, safe=False)
+        return HttpResponse(rlist, content_type="application/json")
