@@ -180,40 +180,67 @@
   <div class="search-list">
     <div class="form-input">
       <label>İsim Soyisim</label>
-      <input type="text" id="searchInputName" placeholder="İsim Soyisim arama" onkeyup="isimArama()">
+      <input type="text" id="searchInputName" placeholder="İsim Soyisim arama">
     </div>
     <div class="form-input">
       <label>Telefon Numarası</label>
       <input type="text" id="searchInputTel" placeholder="Telefon arama">
     </div>
+    <div class="form-input">
+        <button type="button" class="depremzede" onclick="searchThis()"></button>
+    </div>
   </div>
-
+    <div class="search-list-head">
+        <div class="search-list-head-unit">
+            <b>İsim Soyisim</b>
+        </div>
+        <div class="search-list-head-unit">
+            <b>Şehir</b>
+        </div>
+        <div class="search-list-head-unit">
+            <b>Adres</b>
+        </div>
+        <div class="search-list-head-unit phone-head">
+            <b>Telefon</b>
+        </div>
+        <div class="search-list-head-unit">
+            <b>Durum</b>
+        </div>
+        <div class="search-list-head-unit">
+            <b>Tarih</b>
+        </div>
+    </div>
+    <div id="searchList"></div>
   <script>
     function show(selector) {
       document.querySelector(selector).classList.add('open');
       document.querySelector('.selector').classList.add('hidden');
     }
 
-    // var nameInput = document.getElementById("searchInputName");
-    // var telInput = document.getElementById("searchInputTel");
-    // function isimArama() {
-    //   var nameVal = nameInput.value;
-    //   var returnData = [];
-    //   let obj = fetch('https://ben-yiyim-django-production.up.railway.app/search?isim=' + nameVal, { mode: 'no-cors' }).then(response => response.json()).then(data => {
-    //     returnData[] = data;
-    //   });
-    //   console.log(returnData);
-
-    // }
-
-    // function telefonArama() {
-    //   var telVal = nameInput.value;
-    //   var returnData = [];
-    //   let obj = fetch('https://ben-yiyim-django-production.up.railway.app/search?tel=' + telVal, { mode: 'no-cors' }).then(response => response.json()).then(data => {
-    //     returnData[] = data;
-    //   });
-    //   console.log(returnData);
-    // }
+        var nameInput = document.getElementById("searchInputName");
+        var telInput  = document.getElementById("searchInputTel");
+        var listElement = document.getElementById("searchList");
+        function searchThis() {
+            var nameVal = "";
+            var telVal = "";
+            if(nameInput.value !== null || nameInput.value !== undefined || nameInput.value !== "") {
+                nameVal += nameInput.value;
+            }
+            if(telInput.value !== null || telInput.value !== undefined || telInput.value !== "" || telInput.value.length < 6) {
+                telVal += telInput.value;
+            }
+            var returnData = [];
+            let obj = fetch('https://ben-yiyim-django-production.up.railway.app/search?tel=' + telVal + '&isim=' + nameVal ,{mode: 'no-cors'}).then(response => response.json()).then(data => {
+                returnData.push(data);
+            });
+            console.log(returnData);
+            var searchList = "";
+            returnData[0].forEach(function(key,index){
+                searchList += "<div class='search-list-row'><div class='search-list-unit>" + key.fields.isim + "</div><div class='search-list-unit'>" + key.fields.sehir + "</div><div class='search-list-unit'>" + key.fields.adres + "</div></div>"; 
+            })
+            listElement.innerHTML = searchList;
+        }
+        
 
   </script>
 </body>
