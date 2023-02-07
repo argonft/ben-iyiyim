@@ -30,14 +30,15 @@ def search(request):
             if len(request.GET.get('tel')) > 5:
                 reports = Person.objects.filter(isim__icontains=request.GET.get('isim'), tel__contains=request.GET.get('tel'))
                 fs.append("tel")
-        if 'isim' in request.GET:
-            reports = Person.objects.filter(isim__icontains=request.GET.get('isim')).order_by('created_at')[:10]
-        if 'tel' in request.GET:
-            if len(request.GET.get('tel')) > 5:
-                reports = Person.objects.filter(tel__contains=request.GET.get('tel')).order_by('created_at')[:10]
-                fs.append("tel")
-            else:
-                return HttpResponse("Telefon numarası en az 6 hane girilmeli.")
+        else:
+            if 'isim' in request.GET:
+                reports = Person.objects.filter(isim__icontains=request.GET.get('isim')).order_by('created_at')[:10]
+            if 'tel' in request.GET:
+                if len(request.GET.get('tel')) > 5:
+                    reports = Person.objects.filter(tel__contains=request.GET.get('tel')).order_by('created_at')[:10]
+                    fs.append("tel")
+                else:
+                    return HttpResponse("Telefon numarası en az 6 hane girilmeli.")
         if reports is None:
             reports = Person.objects.order_by('created_at')[:50]
         rlist = serialize('json', reports, fields=fs)
