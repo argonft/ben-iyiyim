@@ -348,8 +348,16 @@
     <div id="card__container"></div>
     <script>
       function show(selector) {
-        document.querySelector(selector).classList.add("open");
-        document.querySelector(".selector").classList.add("hidden");
+        
+         if(selector =="form"){
+        document.querySelector("form").classList.toggle("open")
+        document.querySelector(".search-list").classList.remove("open")
+      }
+      else{
+        document.querySelector(".search-list").classList.toggle("open")
+        document.querySelector("form").classList.remove("open")
+      }
+   
       }
 
       var nameInput = document.getElementById("searchInputName");
@@ -445,15 +453,6 @@
           </div>
         </div>
       `;
-    {% if messages %}
-      {% for message in messages %}
-        {% if message.tags == "success" %}
-        alert("{{ message }}");
-        {% elif message.tags == "error" %}
-        alert("{{ message }}");
-        {% endif %}
-      {% endfor %} 
-    {% endif %}  
     </script>
   </body>
 </html>
