@@ -40,17 +40,20 @@
 
       /*** CARD ***/
       .card {
+        width: 100%;
         border-radius: 5px;
         box-shadow: 0 0 10px 3px #e8e8e8;
       }
 
       #card__container {
+        width: 100%;
         padding: 20px 15px;
       }
 
-      .card__container .card:not(:last-child) {
+      #card__container .card:not(:last-child) {
         margin-bottom: 15px;
       }
+
       /*** STATUS BAR ***/
       .card > .card__status {
         color: white;
@@ -64,12 +67,15 @@
       .card > .card__status.success {
         background-color: #41a303;
       }
+
       .card > .card__status.warning {
         background-color: #ffc400;
       }
+
       .card > .card__status.danger {
         background-color: #ff0000;
       }
+
       /*** E: STATUS BAR ***/
 
       /*** HEADER ***/
@@ -80,6 +86,7 @@
         padding: 5px 10px;
         border-bottom: 1px solid #dddddd;
       }
+
       /*** E: HEADER ***/
 
       /*** DETAILS ***/
@@ -92,6 +99,7 @@
         text-decoration: none;
         font-style: normal;
       }
+
       /*** E: DETAILS ***/
       /*** E: CARD ***/
 
@@ -147,9 +155,20 @@
       select,
       textarea {
         background: #ffffff;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        border: none;
         border-top: 1px solid rgba(0, 0, 0, 0.05);
+        display: block;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #495057;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        outline-color: rgb(84 105 212 / 0.5);
+        background-color: rgb(255, 255, 255);
+        box-shadow: rgb(0 0 0 / 0%) 0px 0px 0px 0px,
+          rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px,
+          rgb(60 66 87 / 16%) 0px 0px 0px 1px, rgb(0 0 0 / 0%) 0px 0px 0px 0px,
+          rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px;
       }
 
       textarea {
@@ -168,6 +187,22 @@
         border: none;
         display: block;
         width: 100%;
+      }
+
+      input[type='submit']:hover {
+        background: #25ac53;
+      }
+
+      .arama-butonu:hover {
+        background: #25ac53;
+      }
+
+      input[type='submit']:hover {
+        background: #25ac53;
+      }
+
+      .arama-butonu:hover {
+        background: #25ac53;
       }
 
       form,
@@ -215,6 +250,7 @@
           margin-top: 0;
         }
       }
+
       .search-list-unit {
         display: flex;
         flex-wrap: wrap;
@@ -241,6 +277,7 @@
   </head>
 
   <body>
+    <!------ ANASAYFA ------>
     <h3>
       Beniyiyim.com, yalnızca depremzedeler ve yakınlarının haberleşmesini
       sağlamak için kullanılmaktadır.
@@ -252,8 +289,10 @@
         DEPREMZEDE YAKINIYIM
       </button>
     </div>
+    <!------ E: ANASAYFA ------>
 
-    <form action="report" method="post">
+    <!----- KAYIT SAYFASI ---->
+    <form action="report" class="hidden" method="post">
       {% csrf_token %}
 
       <div class="form-input">
@@ -320,8 +359,10 @@
       </div>
       <div class="form-input"><input type="submit" value="Gönder" /></div>
     </form>
+    <!----- E: KAYIT SAYFASI ---->
 
-    <div class="search-list">
+    <!----- ARAMA SAYFASI ---->
+    <div class="search-list hidden">
       <div class="form-input">
         <label>İsim Soyisim</label>
         <input
@@ -341,7 +382,9 @@
       </div>
     </div>
     <div id="card__container"></div>
+    <!----- E: ARAMA SAYFASI ---->
     <script>
+
       function show(selector) {
         document.querySelector(selector).classList.add('open');
         document.querySelector('.selector').classList.add('hidden');
@@ -426,20 +469,65 @@
         }
       }
 
-      var generateCard = ({ isim, sehir, adres, durum, tarih }) => `
-      <div class="card">
-          <div class="card__status bold ${mapStatus(durum)}">${durum}</div>
-          <div class="card__header">
-            <span class="bold">${isim}</span>
-            <span class="bold">${sehir}</span>
+      function generateCard({ isim, sehir, adres, durum, created_at }) {
+        return `
+          <div class="card">
+            <div class="card__status bold ${mapStatus(durum)}">${durum}</div>
+            <div class="card__header">
+              <span class="bold">${isim}</span>
+              <span class="bold">${sehir}</span>
+            </div>
+            <div class="card__details">
+              <span class="bold">Adres:</span>
+              <var>${adres}</var>
+              <span class="date">${formatDate(created_at)}</span>
+            </div>
           </div>
-          <div class="card__details">
-            <span class="bold">Adres:</span>
-            <var>${adres}</var>
-            <span class="date">${formatDate(tarih)}</span>
-          </div>
-        </div>
-      `;
+        `;
+      }
+
+      function searchThis() {
+        var nameVal = "";
+        var telVal = "";
+        if (
+          nameInput.value !== null ||
+          nameInput.value !== undefined ||
+          nameInput.value !== ""
+        ) {
+          nameVal += "isim=" + nameInput.value;
+        }
+        if (telInput.value.length > 8) {
+          telVal += "tel=" + telInput.value;
+        }
+        var returnData = [];
+        let obj = fetch(
+          "https://ben-yiyim-django-production.up.railway.app/search?" +
+            nameVal +
+            "&" +
+            telVal,
+          { mode: "no-cors" }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            returnData.push(data);
+            var searchList = "";
+            returnData[0].forEach(function (key, index) {
+              var { isim, sehir, adres, durum, created_at } = key.fields;
+              searchList += generateCard({ isim, sehir, adres, durum, created_at });
+            });
+            listElement.innerHTML = searchList;
+          });
+      }
+
+      {% if messages %}
+        {% for message in messages %}
+          {% if message.tags == "success" %}
+          alert("{{ message }}");
+          {% elif message.tags == "error" %}
+          alert("{{ message }}");
+          {% endif %}
+        {% endfor %}
+      {% endif %}
     </script>
   </body>
 </html>
