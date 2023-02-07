@@ -11,6 +11,7 @@ def regexKontrol(input):
     else:
         return False
 
+
 # Create your views here.
 def index(request):
     return render(request, 'deprem.html')
@@ -23,10 +24,9 @@ def report(request):
         durum = request.POST["durum"]
         if "tel" in request.POST:
             tel = request.POST["tel"]
-            tel = "".join(x for x in tel if x.isalpha())
         else:
             tel = "Yok"
-        if regexKontrol(isim) and regexKontrol(sehir) and regexKontrol(adres) and regexKontrol(durum) and regexKontrol(tel):
+        if isimKontrol(isim) and isimKontrol(sehir) and isimKontrol(adres) and isimKontrol(durum) and telKontrol(tel):
             p = Person(isim=isim, sehir=sehir, adres=adres, tel=tel, durum=durum)
             p.save()
             messages.success(request, 'Kaydedildi.')
@@ -35,7 +35,7 @@ def report(request):
     return redirect('index')
 
 def telKontrol(input):
-    if regexKontrol(input) and len(input) > 9:
+    if re.match("^[0-9]+$", input) and len(input) > 9:
         return True
     else:
         return False
