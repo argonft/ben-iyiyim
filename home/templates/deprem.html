@@ -238,7 +238,7 @@
                 var searchList = "";
                 returnData[0].forEach(function(key,index){
                     searchList += "<div class='search-list-row'><div class='search-list-unit'>" + key.fields.isim + "</div><div class='search-list-unit'>" + key.fields.sehir + "</div><div class='search-list-unit'>" + key.fields.adres + "</div><div class='search-list-unit'>" + key.fields.durum + "</div></div>"; 
-                })
+                });
                 listElement.innerHTML = searchList;
             });
             
