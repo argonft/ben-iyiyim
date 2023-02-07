@@ -61,7 +61,6 @@ def search(request):
                     return HttpResponse("İsim en az 3 karakter olmalı.")
             elif 'tel' in request.GET:
                 tel = request.GET.get('tel')
-                print(tel)
                 if telKontrol(tel):
                     reports = Person.objects.filter(tel__contains=tel).order_by('created_at')[:10]
                 else:
