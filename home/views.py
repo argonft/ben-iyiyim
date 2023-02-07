@@ -19,3 +19,8 @@ def report(request):
     p = Person(isim=isim, sehir=sehir, adres=adres, tel=tel, durum=durum)
     p.save()
     return HttpResponse("Kaydedildi.")
+
+def search(request):
+    if request.method == "GET":
+        report_list = Person.objects.order_by('created_at')[:50]
+        return HttpResponse({'list': report_list})
