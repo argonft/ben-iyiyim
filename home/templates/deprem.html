@@ -135,10 +135,18 @@
       input,
       select,
       textarea {
-        background: #ffffff;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        border: none;
-        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        background: #FFFFFF;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            display: block;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #495057;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            outline-color: rgb(84 105 212 / 0.5);
+            background-color: rgb(255, 255, 255);
+            box-shadow: rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(60 66 87 / 16%) 0px 0px 0px 1px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px;
       }
 
       textarea {
@@ -158,6 +166,14 @@
         display: block;
         width: 100%;
       }
+      
+      input[type="submit"]:hover {
+            background: #25ac53;
+        }
+
+        .arama-butonu:hover {
+            background: #25ac53;
+        }
 
       form,
       .search-list {
