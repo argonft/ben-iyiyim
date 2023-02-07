@@ -37,25 +37,25 @@ def report(request):
 def search(request):
     if request.method == "GET":
         if 'isim' in request.GET and "tel" in request.GET:
-            isim = request.GET.get('isim')
-            tel = request.GET.get('tel')
-            if format_html(tel) and format_html(isim):
+            isim = format_html(request.GET.get('isim'))
+            tel = format_html(request.GET.get('tel'))
+            if len(isim) > 2 and telKontrol(tel):
                 reports = Person.objects.filter(isim__icontains=isim, tel__contains=tel)
             else:
                 return HttpResponse("Input hatalı.")
         else:
             if 'isim' in request.GET:
-                isim = request.GET.get('isim')
-                if format_html(isim):
+                isim = format_html(request.GET.get('isim'))
+                if len(isim) > 2:
                     reports = Person.objects.filter(isim__icontains=isim).order_by('created_at')[:10]
                 else:
-                    return HttpResponse("İsim en az 3 karakter olmalı.")
+                    messages.error(request, "İsim en az 3 karakter olmalı.")
             elif 'tel' in request.GET:
-                tel = request.GET.get('tel')
-                if format_html(tel):
+                tel = format_html(request.GET.get('tel'))
+                if telKontrol(tel):
                     reports = Person.objects.filter(tel__contains=tel).order_by('created_at')[:10]
                 else:
-                    return HttpResponse("Telefon numarası en az 10 hane girilmeli.")
+                    return HttpResponse("Telefon numarası bilgileri hatalı.")
             else:
                 return HttpResponse("Arama yapmak için veri girişi yapın.")
         rlist = serialize('json', reports, fields=["isim", "sehir", "adres", "durum", "created_at"], use_natural_primary_keys=True)
