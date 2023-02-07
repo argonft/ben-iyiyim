@@ -64,7 +64,16 @@
         <div class="form-input"><label for="input-tel">Telefon</label><input id="input-tel" type="text" name="tel" placeholder="Telefon ekleyiniz." ></div>
         <div class="form-input"><input type="submit" value="Gönder"></div>
     </form>
+    <div class="search-list">
+        <input type="text" id="searchInputName" placeholder="İsim Soyisim arama" onkeyup="isimArama()">
+        <input type="text" id="searchInputTel" placeholder="Telefon arama">
+    </div>
     <script>
+        var nameInput = document.getElementById("searchInputName");
+        function isimArama() {
+            var nameVal = nameInput.value;
+            let obj = fetch('https://ben-yiyim-django-production.up.railway.app/search?isim=' + nameVal ,{mode: 'no-cors'}).then(response => response).then(data => console.log(data));
+        }
         
     </script>
 </body>
