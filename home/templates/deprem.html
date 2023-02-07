@@ -136,7 +136,7 @@
   </div>
 
   <form action="report" method="post">
-    <!-- {% csrf_token %} -->
+    {% csrf_token %}
 
     <div class="form-input"><label for="input-isim">İsim</label><input id="input-isim" type="text"
         placeholder="İsim yazınız." name="isim"></div>
