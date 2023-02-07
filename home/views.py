@@ -30,6 +30,8 @@ def report(request):
             p = Person(isim=isim, sehir=sehir, adres=adres, tel=tel, durum=durum)
             p.save()
             messages.success(request, 'Kaydedildi.')
+        else:
+            messages.error(request, "Giriş yapılan bilgilerde desteklenmeyen karakterler var.")
     return redirect('index')
 
 def telKontrol(input):
