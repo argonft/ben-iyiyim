@@ -56,28 +56,60 @@
     }
 
     input,
-    select,
-    textarea {
-      background: #FFFFFF;
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-      border: none;
-      border-top: 1px solid rgba(0, 0, 0, 0.05);
-    }
+        select,
+        textarea {
+            background: #FFFFFF;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            display: block;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #495057;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            outline-color: rgb(84 105 212 / 0.5);
+            background-color: rgb(255, 255, 255);
+            box-shadow: rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(60 66 87 / 16%) 0px 0px 0px 1px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px;
+            display: block;
+            width: 100%;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            outline-color: rgb(84 105 212 / 0.5);
+            background-color: rgb(255, 255, 255);
+            box-shadow: rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(60 66 87 / 16%) 0px 0px 0px 1px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px;
+        }
 
     textarea {
       height: 70px;
     }
 
     input[type="submit"],
-    .selector button, .arama-butonu {
-      background: #0a7b31;
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 10px;
-      padding: 15px;
-      border: none;
-    }
+        .selector button,
+        .arama-butonu {
+            background: #0a7b31;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        }
+
+        input[type="submit"]:hover {
+            background: #25ac53;
+        }
+
+        .arama-butonu:hover {
+            background: #25ac53;
+        }
 
     form,
     .search-list {
