@@ -30,7 +30,6 @@ def telKontrol(input):
         return False
 
 def search(request):
-    fs = ["isim", "sehir", "adres", "durum"]
     if request.method == "GET":
         if 'isim' in request.GET and "tel" in request.GET:
             if telKontrol(request.GET.get("tel")):
@@ -47,5 +46,5 @@ def search(request):
                     return HttpResponse("Telefon numarası en az 6 hane girilmeli.")
             else:
                 reports = Person.objects.order_by('created_at')[:50]
-        rlist = serialize('json', reports, fields=fs)
+        rlist = serialize('json', reports, fields=["isim", "sehir", "adres", "durum", "created_at"])
         return HttpResponse(rlist)
