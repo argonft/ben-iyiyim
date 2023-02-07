@@ -129,9 +129,24 @@
     </div>
     <script>
         var nameInput = document.getElementById("searchInputName");
+        var telInput  = document.getElementById("searchInputTel");
         function isimArama() {
             var nameVal = nameInput.value;
-            let obj = fetch('https://ben-yiyim-django-production.up.railway.app/search?isim=' + nameVal ,{mode: 'no-cors'}).then(response => response.json()).then(data => console.log(data));
+            var returnData = [];
+            let obj = fetch('https://ben-yiyim-django-production.up.railway.app/search?isim=' + nameVal ,{mode: 'no-cors'}).then(response => response.json()).then(data => {
+                returnData[] = data;
+            });
+            console.log(returnData);
+            
+        }
+        
+        function telefonArama() {
+            var telVal = nameInput.value;
+            var returnData = [];
+            let obj = fetch('https://ben-yiyim-django-production.up.railway.app/search?tel=' + telVal ,{mode: 'no-cors'}).then(response => response.json()).then(data => {
+                returnData[] = data;
+            });
+            console.log(returnData);
         }
         
     </script>
