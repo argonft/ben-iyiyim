@@ -1,6 +1,8 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.core.serializers import serialize
 from django.shortcuts import render
 from .models import Person
+import json
 
 # Create your views here.
 def index(request):
@@ -22,5 +24,6 @@ def report(request):
 
 def search(request):
     if request.method == "GET":
-        report_list = Person.objects.order_by('created_at')[:50]
-        return HttpResponse({'list': report_list})
+        reports = Person.objects.order_by('created_at')[:50]
+        rlist = serialize('json', reports)
+        return HttpResponse(rlist)
