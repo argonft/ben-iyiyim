@@ -1,13 +1,25 @@
 from django.http import HttpResponse, JsonResponse
 from django.core.serializers import serialize
 from django.shortcuts import render
-from .models import Person
-from django.db.models import Q
-import json
 
-# Create your views here.
+from .serializers import PersonSerializer
+from .models import Person
+
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import viewsets
+
+
+class PersonViewSet(viewsets.ModelViewSet):
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = PersonSerializer
+    queryset = Person.objects.all()
+
+
 def index(request):
     return render(request, 'deprem.html')
+
 
 def report(request):
     if request.method == 'POST':
@@ -23,11 +35,13 @@ def report(request):
     p.save()
     return HttpResponse("Kaydedildi.")
 
+
 def telKontrol(input):
     if len(input) > 5:
         return True
     else:
         return False
+
 
 def search(request):
     if request.method == "GET":
