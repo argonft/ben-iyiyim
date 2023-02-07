@@ -126,7 +126,7 @@
         margin-top: 0;
       }
     }
-    .search-list {
+    .search-list-unit {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
@@ -199,7 +199,7 @@
       </select>
     </div>
     <div class="form-input"><label for="input-tel">Telefon</label><input id="input-tel" type="tel" name="tel"
-        placeholder="Telefon ekleyiniz."></div>
+        placeholder="Telefon ekleyiniz (Örn: 05XXXXXXXXX)."></div>
     <div class="form-input"><input type="submit" value="Gönder"></div>
   </form>
 
@@ -210,7 +210,7 @@
     </div>
     <div class="form-input">
       <label>Telefon Numarası</label>
-      <input type="tel" id="searchInputTel" placeholder="Telefon arama">
+      <input type="tel" id="searchInputTel" placeholder="Örn: 05XXXXXXXXX">
     </div>
     <div class="form-input">
         <button type="button" class="arama-butonu" onclick="searchThis()">Ara</button>
@@ -242,7 +242,7 @@
                 var searchList = "";
                 returnData[0].forEach(function(key,index){
                   var submitTarih = key.fields.tarih;
-                    searchList += "<div class='search-list'><div class='search-result'>" + "<p class='data'>İsim Soyisim: " + key.fields.isim + "</p><p class='data'>Şehir:" 
+                    searchList += "<div class='search-list-unit'><div class='search-result'>" + "<p class='data'>İsim Soyisim: " + key.fields.isim + "</p><p class='data'>Şehir:" 
                       + key.fields.sehir + "</p><p class='data'>Adres: " 
                       + key.fields.adres + "</p><p class='data'>Durum: " + key.fields.durum + "</p><p class='data'>Tarih: " + submitTarih + "</p>"
                       + "</div></div>"; 
