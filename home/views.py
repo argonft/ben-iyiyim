@@ -1,10 +1,25 @@
 from django.http import HttpResponse, JsonResponse
 from django.core.serializers import serialize
 from django.shortcuts import render, redirect
-from .models import Person
 from django.contrib import messages
-from django.utils.html import format_html
+from html import escape
+import json
 import re
+
+from rest_framework import viewsets
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
+
+from .models import Person
+from .serializers import PersonSerializer
+
+
+class PersonViewSet(viewsets.ModelViewSet):
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = Person.objects.all().order_by('created_at')
+    serializer_class = PersonSerializer
+
 
 def telKontrol(input):
     if re.match("^[0-9]+$", input) and len(input) > 9:
@@ -18,10 +33,10 @@ def index(request):
 
 def report(request):
     if request.method == 'POST':
-        isim = format_html(request.POST["isim"])
-        sehir = format_html(request.POST["sehir"])
-        adres = format_html(request.POST["adres"])
-        durum = format_html(request.POST["durum"])
+        isim = escape(request.POST["isim"])
+        sehir = escape(request.POST["sehir"])
+        adres = escape(request.POST["adres"])
+        durum = escape(request.POST["durum"])
         if "tel" in request.POST:
             tel = request.POST["tel"]
         else:
@@ -39,24 +54,29 @@ def search(request):
         if 'isim' in request.GET and "tel" in request.GET:
             isim = request.GET.get('isim')
             tel = request.GET.get('tel')
-            if format_html(tel) and format_html(isim):
+            if escape(tel) and escape(isim):
                 reports = Person.objects.filter(isim__icontains=isim, tel__contains=tel)
             else:
                 return HttpResponse("Input hatalı.")
         else:
             if 'isim' in request.GET:
                 isim = request.GET.get('isim')
-                if format_html(isim):
+                if escape(isim):
                     reports = Person.objects.filter(isim__icontains=isim).order_by('created_at')[:10]
                 else:
                     return HttpResponse("İsim en az 3 karakter olmalı.")
             elif 'tel' in request.GET:
                 tel = request.GET.get('tel')
-                if format_html(tel):
+                if escape(tel):
                     reports = Person.objects.filter(tel__contains=tel).order_by('created_at')[:10]
                 else:
                     return HttpResponse("Telefon numarası en az 10 hane girilmeli.")
             else:
                 return HttpResponse("Arama yapmak için veri girişi yapın.")
         rlist = serialize('json', reports, fields=["isim", "sehir", "adres", "durum", "created_at"], use_natural_primary_keys=True)
+        robject = json.loads(rlist)
+        for d in robject:
+            del d['pk']
+            del d['model']
+        rlist = json.dumps(robject)
         return HttpResponse(rlist, content_type="application/json")
