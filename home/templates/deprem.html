@@ -468,7 +468,7 @@
         if (telInput.value.length > 8) {
           telVal += "tel=" + telInput.value;
         }
-        if (telInput.value.length > 8 || nameInput.value.length > 2) {
+        if (telInput.value.length > 9 || nameInput.value.length > 2) {
           let obj = fetch(
             "https://ben-yiyim-django-production.up.railway.app/search?" +
               nameVal +
