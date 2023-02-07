@@ -15,11 +15,16 @@ def index(request):
 def report(request):
     if request.method == 'POST':
         isim = request.POST["isim"]
+        isim = "".join(x for x in isim if x.isalpha())
         sehir = request.POST["sehir"]
+        sehir = "".join(x for x in sehir if x.isalpha())
         adres = request.POST["adres"]
+        adres = "".join(x for x in adres if x.isalpha())
         durum = request.POST["durum"]
+        durum = "".join(x for x in durum if x.isalpha())
         if "tel" in request.POST:
             tel = request.POST["tel"]
+            tel = "".join(x for x in tel if x.isalpha())
         else:
             tel = "Yok"
     p = Person(isim=isim, sehir=sehir, adres=adres, tel=tel, durum=durum)
@@ -34,22 +39,39 @@ def telKontrol(input):
     else:
         return False
 
+def isimKontrol(input):
+    if len(input) > 2:
+        return True
+    else:
+        return False
+
 def search(request):
     if request.method == "GET":
         if 'isim' in request.GET and "tel" in request.GET:
-            if telKontrol(request.GET.get("tel")):
-                reports = Person.objects.filter(isim__icontains=request.GET.get('isim'), tel__contains=request.GET.get('tel'))
+            isim = request.GET.get('isim')
+            isim = "".join(x for x in isim if x.isalpha())
+            tel = request.GET.get('tel')
+            tel = "".join(x for x in tel if x.isalpha())
+            if telKontrol(tel) and isimKontrol(isim):
+                reports = Person.objects.filter(isim__icontains=isim, tel__contains=tel)
             else:
-                return HttpResponse("Telefon numarası en az 10 hane girilmeli.")
+                return HttpResponse("Input hatalı.")
         else:
             if 'isim' in request.GET:
-                reports = Person.objects.filter(isim__icontains=request.GET.get('isim')).order_by('created_at')[:10]
+                isim = request.GET.get('isim')
+                isim = "".join(x for x in isim if x.isalpha())
+                if isimKontrol(isim):
+                    reports = Person.objects.filter(isim__icontains=isim).order_by('created_at')[:10]
+                else:
+                    return HttpResponse("İsim en az 3 karakter olmalı.")
             elif 'tel' in request.GET:
-                if telKontrol(request.GET.get("tel")):
-                    reports = Person.objects.filter(tel__contains=request.GET.get('tel')).order_by('created_at')[:10]
+                tel = request.GET.get('tel')
+                tel = "".join(x for x in tel if x.isalpha())
+                if telKontrol(tel):
+                    reports = Person.objects.filter(tel__contains=tel).order_by('created_at')[:10]
                 else:
                     return HttpResponse("Telefon numarası en az 10 hane girilmeli.")
             else:
-                reports = Person.objects.order_by('created_at')[:50]
+                return HttpResponse("Arama yapmak için veri girişi yapın.")
         rlist = serialize('json', reports, fields=["isim", "sehir", "adres", "durum", "created_at"])
-        return HttpResponse(rlist)
+        return JsonResponse(rlist)
