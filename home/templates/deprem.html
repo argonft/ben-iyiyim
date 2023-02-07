@@ -358,11 +358,12 @@
           type="text"
           id="searchInputName"
           placeholder="İsim Soyisim arama"
+               min="3"
         />
       </div>
       <div class="form-input">
         <label>Telefon Numarası</label>
-        <input type="tel" id="searchInputTel" placeholder="Örn: 05XXXXXXXXX" />
+        <input type="tel" id="searchInputTel" placeholder="Örn: 05XXXXXXXXX" min="10"/>
       </div>
       <div class="form-input">
         <button type="button" class="arama-butonu" onclick="searchThis()">
