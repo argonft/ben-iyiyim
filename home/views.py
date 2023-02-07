@@ -25,7 +25,7 @@ def report(request):
     return HttpResponse("Kaydedildi.")
 
 def telKontrol(input):
-    if len(input) > 10:
+    if len(input) > 9:
         return True
     else:
         return False
