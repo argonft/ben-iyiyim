@@ -6,7 +6,7 @@ import json
 
 # Create your views here.
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'deprem.html')
 
 def report(request):
     if request.method == 'POST':
