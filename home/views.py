@@ -4,7 +4,7 @@ from .models import Person
 
 # Create your views here.
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'staticfiles/index.html')
 
 def report(request):
     if request.method == 'POST':
