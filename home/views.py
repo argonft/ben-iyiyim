@@ -24,6 +24,12 @@ def report(request):
 
 def search(request):
     if request.method == "GET":
-        reports = Person.objects.order_by('created_at')[:50]
+        if 'isim' in request.GET:
+            reports = Person.objects.defer("tel").filter(isim__contains=request.GET.get('isim')).order_by('created_at')[:10]
+        elif 'tel' in request.GET:
+            if len(request.GET.get('tel')) > 5:
+                reports = Person.objects.filter(tel__contains=request.GET.get('tel')).order_by('created_at')[:10]
+        else:
+            reports = Person.objects.defer("tel").order_by('created_at')[:50]
         rlist = serialize('json', reports)
         return HttpResponse(rlist)
