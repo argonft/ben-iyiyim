@@ -49,7 +49,9 @@ def search(request):
     if request.method == "GET":
         if 'isim' in request.GET and "tel" in request.GET:
             isim = request.GET.get('isim')
+            isim = "".join(x for x in isim if x.isalpha())
             tel = request.GET.get('tel')
+            tel = "".join(x for x in tel if x.isalpha())
             if telKontrol(tel) and isimKontrol(isim):
                 reports = Person.objects.filter(isim__icontains=isim, tel__contains=tel)
             else:
@@ -57,12 +59,14 @@ def search(request):
         else:
             if 'isim' in request.GET:
                 isim = request.GET.get('isim')
+                isim = "".join(x for x in isim if x.isalpha())
                 if isimKontrol(isim):
                     reports = Person.objects.filter(isim__icontains=isim).order_by('created_at')[:10]
                 else:
                     return HttpResponse("İsim en az 3 karakter olmalı.")
             elif 'tel' in request.GET:
                 tel = request.GET.get('tel')
+                tel = "".join(x for x in tel if x.isalpha())
                 if telKontrol(tel):
                     reports = Person.objects.filter(tel__contains=tel).order_by('created_at')[:10]
                 else:
