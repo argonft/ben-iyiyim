@@ -397,7 +397,7 @@
           return "";
         }
 
-        date.setHours(date.getHours() - 3); // gmt+3
+        date.setHours(date.getHours()); // gmt+3
 
         var dateObj = {
           year: date.getFullYear(),
