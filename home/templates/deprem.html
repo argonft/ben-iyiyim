@@ -226,7 +226,7 @@
             if(nameInput.value !== null || nameInput.value !== undefined || nameInput.value !== "") {
                 nameVal += nameInput.value;
             }
-            if(telInput.value !== null || telInput.value !== undefined || telInput.value !== "" || telInput.value.length < 9) {
+            if(telInput.value.length > 8) {
                 telVal += "&tel=" + telInput.value;
             }
             var returnData = [];
