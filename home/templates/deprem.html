@@ -6,21 +6,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Demo</title>
     <style>
-        .form-input label {text-align: center;width: 100%;display: block;font-size: 18px;}
+    body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
 
-* {
-    font-family: sans-serif;
-}
+    h3 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-.form-input input, .form-input select {
-    padding: 10px;
-    width: 100%;
-    box-sizing: border-box;
-}
+    .form-input label {
+      text-align: left;
+      width: 100%;
+      display: block;
+      font-size: 18px;
+      padding-bottom: 4px;
+    }
 
-.form-input {
-    margin-bottom: 10px;
-}
+    .form-input+.form-input {
+      margin-top: 20px;
+    }
+
+    * {
+      font-family: sans-serif;
+    }
+
+    form {
+      width: 90%;
+      max-width: 500px;
+    }
+
+    .form-input input,
+    .form-input select,
+    .form-input textarea {
+      padding: 10px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .form-input {
+      margin-bottom: 10px;
+    }
+
+    input,
+    select,
+    textarea {
+      background: #FFFFFF;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border: none;
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    textarea {
+      height: 70px;
+    }
+
+    input[type="submit"] {
+      background: #0a7b31;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+      padding: 15px;
+    }
+
+    @media (max-width: 500px) {
+      h3 {
+        font-size: 16px;
+        margin-top: 0;
+      }
+    }
     </style>
 </head>
 <body>
@@ -70,9 +129,24 @@
     </div>
     <script>
         var nameInput = document.getElementById("searchInputName");
+        var telInput  = document.getElementById("searchInputTel");
         function isimArama() {
             var nameVal = nameInput.value;
-            let obj = fetch('https://ben-yiyim-django-production.up.railway.app/search?isim=' + nameVal ,{mode: 'no-cors'}).then(response => response).then(data => console.log(data));
+            var returnData = [];
+            let obj = fetch('https://ben-yiyim-django-production.up.railway.app/search?isim=' + nameVal ,{mode: 'no-cors'}).then(response => response.json()).then(data => {
+                returnData[] = data;
+            });
+            console.log(returnData);
+            
+        }
+        
+        function telefonArama() {
+            var telVal = nameInput.value;
+            var returnData = [];
+            let obj = fetch('https://ben-yiyim-django-production.up.railway.app/search?tel=' + telVal ,{mode: 'no-cors'}).then(response => response.json()).then(data => {
+                returnData[] = data;
+            });
+            console.log(returnData);
         }
         
     </script>
