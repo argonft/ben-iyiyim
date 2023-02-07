@@ -6,6 +6,10 @@ from django.contrib import messages
 from django.utils.html import format_html
 import re
 
+def remove_html_markup(s):
+    clean = re.compile('<.*?>')
+    return str(re.sub(clean, '', str(s)))
+
 def telKontrol(input):
     if re.match("^[0-9]+$", input) and len(input) > 9:
         return True
@@ -24,10 +28,10 @@ def index(request):
 
 def report(request):
     if request.method == 'POST':
-        isim = format_html(request.POST["isim"])
-        sehir = format_html(request.POST["sehir"])
-        adres = format_html(request.POST["adres"])
-        durum = format_html(request.POST["durum"])
+        isim = remove_html_markup(format_html(request.POST["isim"]))
+        sehir = remove_html_markup(format_html(request.POST["sehir"]))
+        adres = remove_html_markup(format_html(request.POST["adres"]))
+        durum = remove_html_markup(format_html(request.POST["durum"]))
         if "tel" in request.POST:
             tel = request.POST["tel"]
         else:
@@ -43,8 +47,8 @@ def report(request):
 def search(request):
     if request.method == "GET":
         if 'isim' in request.GET and "tel" in request.GET:
-            isim = format_html(request.GET.get('isim'))
-            tel = format_html(request.GET.get('tel'))
+            isim = remove_html_markup(format_html(request.GET.get('isim')))
+            tel = remove_html_markup(format_html(request.GET.get('tel')))
             if len(isim) > 2 and telKontrol(tel):
                 reports = Person.objects.filter(isim__icontains=isim, tel__contains=tel)
             else:
