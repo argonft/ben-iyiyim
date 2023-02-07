@@ -12,6 +12,12 @@ def telKontrol(input):
     else:
         return False
 
+def textKontrol(input):
+    if len(input) > 2:
+        return True
+    else:
+        return False
+
 # Create your views here.
 def index(request):
     return render(request, 'deprem.html')
@@ -26,7 +32,7 @@ def report(request):
             tel = request.POST["tel"]
         else:
             tel = "Yok"
-        if telKontrol(tel):
+        if telKontrol(tel) and textKontrol(isim) and textKontrol(sehir) and textKontrol(adres) and textKontrol(durum):
             p = Person(isim=isim, sehir=sehir, adres=adres, tel=tel, durum=durum)
             p.save()
             messages.success(request, 'Kaydedildi.')
@@ -46,6 +52,7 @@ def search(request):
         else:
             if 'isim' in request.GET:
                 isim = format_html(request.GET.get('isim'))
+                print(len(isim))
                 if len(isim) > 2:
                     reports = Person.objects.filter(isim__icontains=isim).order_by('created_at')[:10]
                 else:
