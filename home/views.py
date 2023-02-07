@@ -2,10 +2,8 @@ from django.http import HttpResponse, JsonResponse
 from django.core.serializers import serialize
 from django.shortcuts import render, redirect
 from .models import Person
-from django.db.models import Q
-from datetime import datetime
-import json
 from django.contrib import messages
+import re
 
 # Create your views here.
 def index(request):
@@ -34,13 +32,13 @@ def report(request):
     return redirect('index')
 
 def telKontrol(input):
-    if len(input) > 9:
+    if re.match("^[A-Za-z0-9_-]*$", input) and len(input) > 9:
         return True
     else:
         return False
 
 def isimKontrol(input):
-    if len(input) > 2:
+    if re.match("^[A-Za-z0-9_-]*$", input) and len(input) > 2:
         return True
     else:
         return False
@@ -49,9 +47,7 @@ def search(request):
     if request.method == "GET":
         if 'isim' in request.GET and "tel" in request.GET:
             isim = request.GET.get('isim')
-            isim = "".join(x for x in isim if x.isalpha())
             tel = request.GET.get('tel')
-            tel = "".join(x for x in tel if x.isalpha())
             if telKontrol(tel) and isimKontrol(isim):
                 reports = Person.objects.filter(isim__icontains=isim, tel__contains=tel)
             else:
@@ -59,14 +55,13 @@ def search(request):
         else:
             if 'isim' in request.GET:
                 isim = request.GET.get('isim')
-                isim = "".join(x for x in isim if x.isalpha())
                 if isimKontrol(isim):
                     reports = Person.objects.filter(isim__icontains=isim).order_by('created_at')[:10]
                 else:
                     return HttpResponse("İsim en az 3 karakter olmalı.")
             elif 'tel' in request.GET:
                 tel = request.GET.get('tel')
-                tel = "".join(x for x in tel if x.isalpha())
+                print(tel)
                 if telKontrol(tel):
                     reports = Person.objects.filter(tel__contains=tel).order_by('created_at')[:10]
                 else:
