@@ -1,4 +1,4 @@
-[For English](README_ENG.md)
+[For Turkish](README.md)
 
 ## About Project
 Ben İyiyim (I'm Well) is developed as an easy-usage application to reach and update information about people who is in current earthquake area. Also we frequently add the data that is coming from State Hospitals to our database. 
