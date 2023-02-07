@@ -1,4 +1,4 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.core.serializers import serialize
 from django.shortcuts import render, redirect
 from .models import Person
@@ -37,7 +37,7 @@ def report(request):
             p.save()
             messages.success(request, 'Kaydedildi.')
         else:
-            messages.error(request, "Giriş yapılan bilgilerde desteklenmeyen karakterler var.")
+            return HttpResponseBadRequest("Giriş yapılan bilgilerde desteklenmeyen karakterler var.")
     return redirect('index')
 
 def search(request):
@@ -48,7 +48,7 @@ def search(request):
             if len(isim) > 2 and telKontrol(tel):
                 reports = Person.objects.filter(isim__icontains=isim, tel__contains=tel)
             else:
-                return HttpResponse("Input hatalı.")
+                return HttpResponseBadRequest("Input hatalı.")
         else:
             if 'isim' in request.GET:
                 isim = format_html(request.GET.get('isim'))
@@ -56,13 +56,13 @@ def search(request):
                 if len(isim) > 2:
                     reports = Person.objects.filter(isim__icontains=isim).order_by('created_at')[:10]
                 else:
-                    messages.error(request, "İsim en az 3 karakter olmalı.")
+                    return HttpResponseBadRequest('İsim 2 karakterden uzun olmalı.')
             elif 'tel' in request.GET:
                 tel = format_html(request.GET.get('tel'))
                 if telKontrol(tel):
                     reports = Person.objects.filter(tel__contains=tel).order_by('created_at')[:10]
                 else:
-                    return HttpResponse("Telefon numarası bilgileri hatalı.")
+                    return HttpResponseBadRequest("Telefon numarası bilgileri hatalı.")
             else:
                 return HttpResponse("Arama yapmak için veri girişi yapın.")
         rlist = serialize('json', reports, fields=["isim", "sehir", "adres", "durum", "created_at"], use_natural_primary_keys=True)
