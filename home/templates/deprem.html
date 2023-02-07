@@ -77,6 +77,8 @@
       margin-top: 10px;
       padding: 15px;
       border: none;
+      display: block;
+      width: 100%;
     }
 
     form,
@@ -124,6 +126,28 @@
         margin-top: 0;
       }
     }
+    .search-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+
+        gap: 10px;
+      }
+
+      .search-result {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+        width: 200px;
+      }
+
+      .data {
+        display: flex;
+        flex-wrap: wrap;
+      }
   </style>
 </head>
 
@@ -174,7 +198,7 @@
         <option value="Enkaz altındayım.">Enkaz altındayım.</option>
       </select>
     </div>
-    <div class="form-input"><label for="input-tel">Telefon</label><input id="input-tel" type="text" name="tel"
+    <div class="form-input"><label for="input-tel">Telefon</label><input id="input-tel" type="tel" name="tel"
         placeholder="Telefon ekleyiniz."></div>
     <div class="form-input"><input type="submit" value="Gönder"></div>
   </form>
@@ -186,32 +210,12 @@
     </div>
     <div class="form-input">
       <label>Telefon Numarası</label>
-      <input type="text" id="searchInputTel" placeholder="Telefon arama">
+      <input type="tel" id="searchInputTel" placeholder="Telefon arama">
     </div>
     <div class="form-input">
         <button type="button" class="arama-butonu" onclick="searchThis()">Ara</button>
     </div>
   </div>
-    <div class="search-list-head">
-        <div class="search-list-head-unit">
-            <b>İsim Soyisim</b>
-        </div>
-        <div class="search-list-head-unit">
-            <b>Şehir</b>
-        </div>
-        <div class="search-list-head-unit">
-            <b>Adres</b>
-        </div>
-        <div class="search-list-head-unit phone-head">
-            <b>Telefon</b>
-        </div>
-        <div class="search-list-head-unit">
-            <b>Durum</b>
-        </div>
-        <div class="search-list-head-unit">
-            <b>Tarih</b>
-        </div>
-    </div>
     <div id="searchList"></div>
   <script>
     function show(selector) {
@@ -237,7 +241,11 @@
                 console.log(returnData);
                 var searchList = "";
                 returnData[0].forEach(function(key,index){
-                    searchList += "<div class='search-list-row'><div class='search-list-unit'>" + key.fields.isim + "</div><div class='search-list-unit'>" + key.fields.sehir + "</div><div class='search-list-unit'>" + key.fields.adres + "</div><div class='search-list-unit'>" + key.fields.durum + "</div></div>"; 
+                  var submitTarih = key.fields.tarih;
+                    searchList += "<div class='search-list'><div class='search-result'>" + "<p class='data'>İsim Soyisim: " + key.fields.isim + "</p><p class='data'>Şehir:" 
+                      + key.fields.sehir + "</p><p class='data'>Adres: " 
+                      + key.fields.adres + "</p><p class='data'>Durum: " + key.fields.durum + "</p><p class='data'>Tarih: " + submitTarih + "</p>"
+                      + "</div></div>"; 
                 });
                 listElement.innerHTML = searchList;
             });
