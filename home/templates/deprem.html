@@ -338,7 +338,7 @@
         </select>
       </div>
       <div class="form-input">
-        <label for="input-tel">Telefon</label
+        <label for="input-tel">Telefon <small>(Opsiyonel)</small></label
         ><input
           id="input-tel"
           type="tel"
@@ -353,16 +353,17 @@
     <!----- ARAMA SAYFASI ---->
     <div class="search-list hidden">
       <div class="form-input">
-        <label>İsim Soyisim</label>
+        <label>İsim Soyisim<small>(En az 3 karakter)</small></label>
         <input
           type="text"
           id="searchInputName"
           placeholder="İsim Soyisim arama"
+               min="3"
         />
       </div>
       <div class="form-input">
-        <label>Telefon Numarası</label>
-        <input type="tel" id="searchInputTel" placeholder="Örn: 05XXXXXXXXX" />
+        <label>Telefon Numarası<small>(En az 10 karakter)</small></label>
+        <input type="tel" id="searchInputTel" placeholder="Örn: 05XXXXXXXXX" min="10"/>
       </div>
       <div class="form-input">
         <button type="button" class="arama-butonu" onclick="searchThis()">
@@ -460,32 +461,34 @@
         var nameVal = "";
         var telVal = "";
         if (
-          nameInput.value !== null ||
-          nameInput.value !== undefined ||
-          nameInput.value !== ""
+          nameInput.value.length > 2
         ) {
           nameVal += "isim=" + nameInput.value;
         }
         if (telInput.value.length > 8) {
           telVal += "tel=" + telInput.value;
         }
-        let obj = fetch(
-          "https://ben-yiyim-django-production.up.railway.app/search?" +
-            nameVal +
-            "&" +
-            telVal,
-          { mode: "no-cors" }
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            listElement.innerHTML = ""
-            data.forEach(function (key, index) {
-              var { isim, sehir, adres, durum, created_at } = key.fields;
-              listElement.appendChild(
-                generateCard({ isim, sehir, adres, durum, created_at })
-              );
+        if (telInput.value.length > 9 || nameInput.value.length > 2) {
+          let obj = fetch(
+            "https://ben-yiyim-django-production.up.railway.app/search?" +
+              nameVal +
+              "&" +
+              telVal,
+            { mode: "no-cors" }
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              listElement.innerHTML = ""
+              data.forEach(function (key, index) {
+                var { isim, sehir, adres, durum, created_at } = key.fields;
+                listElement.appendChild(
+                  generateCard({ isim, sehir, adres, durum, created_at })
+                );
+              });
             });
-          });
+          } else {
+            alert("İsim en az 3 karakter, telefon ise en az 2 karakter olmalıdır.");
+          }  
       }
 
       {% if messages %}
