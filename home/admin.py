@@ -1,6 +1,9 @@
 from django.contrib import admin
 from .views import *
-# Register your models here.
+from rest_framework.authtoken.admin import TokenAdmin
+
+TokenAdmin.raw_id_fields = ['user']
+
 
 class PersonAdmin(admin.ModelAdmin):
     list_display = ('isim', 'sehir', 'adres', 'tel', 'durum', 'created_at')
