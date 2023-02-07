@@ -5,40 +5,41 @@ from .models import Person
 from django.contrib import messages
 import re
 
+def regexKontrol(input):
+    if re.match("^[A-Za-z0-9_-]*$", input):
+        return True
+    else:
+        return False
+
 # Create your views here.
 def index(request):
     return render(request, 'deprem.html')
 
-
 def report(request):
     if request.method == 'POST':
         isim = request.POST["isim"]
-        isim = "".join(x for x in isim if x.isalpha())
         sehir = request.POST["sehir"]
-        sehir = "".join(x for x in sehir if x.isalpha())
         adres = request.POST["adres"]
-        adres = "".join(x for x in adres if x.isalpha())
         durum = request.POST["durum"]
-        durum = "".join(x for x in durum if x.isalpha())
         if "tel" in request.POST:
             tel = request.POST["tel"]
             tel = "".join(x for x in tel if x.isalpha())
         else:
             tel = "Yok"
-    p = Person(isim=isim, sehir=sehir, adres=adres, tel=tel, durum=durum)
-    p.save()
-    messages.success(request, 'Kaydedildi.')
-
+        if regexKontrol(isim) and regexKontrol(sehir) and regexKontrol(adres) and regexKontrol(durum) and regexKontrol(tel):
+            p = Person(isim=isim, sehir=sehir, adres=adres, tel=tel, durum=durum)
+            p.save()
+            messages.success(request, 'Kaydedildi.')
     return redirect('index')
 
 def telKontrol(input):
-    if re.match("^[A-Za-z0-9_-]*$", input) and len(input) > 9:
+    if regexKontrol(input) and len(input) > 9:
         return True
     else:
         return False
 
 def isimKontrol(input):
-    if re.match("^[A-Za-z0-9_-]*$", input) and len(input) > 2:
+    if regexKontrol(input) and len(input) > 2:
         return True
     else:
         return False
