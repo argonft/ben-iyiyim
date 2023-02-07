@@ -23,13 +23,15 @@ def report(request):
     return HttpResponse("Kaydedildi.")
 
 def search(request):
+    fs = ["isim", "sehir", "adres", "durum"]
     if request.method == "GET":
         if 'isim' in request.GET:
-            reports = Person.objects.defer("tel").filter(isim__icontains=request.GET.get('isim')).order_by('created_at')[:10]
+            reports = Person.objects.filter(isim__icontains=request.GET.get('isim')).order_by('created_at')[:10]
         elif 'tel' in request.GET:
             if len(request.GET.get('tel')) > 5:
                 reports = Person.objects.filter(tel__contains=request.GET.get('tel')).order_by('created_at')[:10]
+                fs.append("tel")
         else:
-            reports = Person.objects.defer("tel").order_by('created_at')[:50]
-        rlist = serialize('json', reports)
+            reports = Person.objects.order_by('created_at')[:50]
+        rlist = serialize('json', reports, fields=fs)
         return HttpResponse(rlist)
