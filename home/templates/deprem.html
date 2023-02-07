@@ -4,6 +4,17 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="images/icons/beniyiyim72.png" />
+    <link rel="apple-touch-icon" href="images/icons/beniyiyim96.png" />
+    <link rel="apple-touch-icon" href="images/icons/beniyiyim128.png" />
+    <link rel="apple-touch-icon" href="images/icons/beniyiyim144.png" />
+    <link rel="apple-touch-icon" href="images/icons/beniyiyim152.png" />
+    <link rel="apple-touch-icon" href="images/icons/beniyiyim192.png" />
+    <link rel="apple-touch-icon" href="images/icons/beniyiyim384.png" />
+    <link rel="apple-touch-icon" href="images/icons/beniyiyim512.png" />
+    <meta name="apple-mobile-web-app-status-bar" content="#db4938" />
+    <meta name="theme-color" content="#db4938" />
     <title>Ben İyiyim</title>
     <style>
       *,
@@ -145,7 +156,7 @@
         height: 70px;
       }
 
-      input[type="submit"],
+      input[type='submit'],
       .selector button,
       .arama-butonu {
         background: #0a7b31;
@@ -332,38 +343,38 @@
     <div id="card__container"></div>
     <script>
       function show(selector) {
-        document.querySelector(selector).classList.add("open");
-        document.querySelector(".selector").classList.add("hidden");
+        document.querySelector(selector).classList.add('open');
+        document.querySelector('.selector').classList.add('hidden');
       }
 
-      var nameInput = document.getElementById("searchInputName");
-      var telInput = document.getElementById("searchInputTel");
-      var listElement = document.getElementById("card__container");
+      var nameInput = document.getElementById('searchInputName');
+      var telInput = document.getElementById('searchInputTel');
+      var listElement = document.getElementById('card__container');
       function searchThis() {
-        var nameVal = "";
-        var telVal = "";
+        var nameVal = '';
+        var telVal = '';
         if (
           nameInput.value !== null ||
           nameInput.value !== undefined ||
-          nameInput.value !== ""
+          nameInput.value !== ''
         ) {
-          nameVal += "isim=" + nameInput.value;
+          nameVal += 'isim=' + nameInput.value;
         }
         if (telInput.value.length > 8) {
-          telVal += "tel=" + telInput.value;
+          telVal += 'tel=' + telInput.value;
         }
         var returnData = [];
         let obj = fetch(
-          "https://ben-yiyim-django-production.up.railway.app/search?" +
+          'https://ben-yiyim-django-production.up.railway.app/search?' +
             nameVal +
-            "&" +
+            '&' +
             telVal,
-          { mode: "no-cors" }
+          { mode: 'no-cors' }
         )
           .then((response) => response.json())
           .then((data) => {
             returnData.push(data);
-            var searchList = "";
+            var searchList = '';
             returnData[0].forEach(function (key, index) {
               var { isim, sehir, adres, durum, tarih } = key.fields;
               searchList += generateCard({ isim, sehir, adres, durum, tarih });
@@ -375,8 +386,8 @@
       function formatDate(dateString) {
         var date = new Date(dateString);
 
-        if (date.toString() === "Invalid Date") {
-          return "";
+        if (date.toString() === 'Invalid Date') {
+          return '';
         }
 
         date.setHours(date.getHours() - 3); // gmt+3
@@ -391,27 +402,27 @@
 
         return (
           dateObj.hour +
-          ":" +
+          ':' +
           dateObj.mins +
-          " - " +
+          ' - ' +
           dateObj.day +
-          "/" +
+          '/' +
           dateObj.month +
-          "/" +
+          '/' +
           dateObj.year
         );
       }
 
       function mapStatus(status) {
         switch (status) {
-          case "iyiyim":
-            return "success";
-          case "enkaz-altinda-degilim-fakat-yardima-ihtiyacim-var":
-            return "warning";
-          case "enkaz-altindayim":
-            return "danger";
+          case 'iyiyim':
+            return 'success';
+          case 'enkaz-altinda-degilim-fakat-yardima-ihtiyacim-var':
+            return 'warning';
+          case 'enkaz-altindayim':
+            return 'danger';
           default:
-            return "success";
+            return 'success';
         }
       }
 
