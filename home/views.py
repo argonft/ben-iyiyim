@@ -1,14 +1,16 @@
 from django.http import HttpResponse, JsonResponse
 from django.core.serializers import serialize
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Person
 from django.db.models import Q
 from datetime import datetime
 import json
+from django.contrib import messages
 
 # Create your views here.
 def index(request):
     return render(request, 'deprem.html')
+
 
 def report(request):
     if request.method == 'POST':
@@ -22,7 +24,9 @@ def report(request):
             tel = "Yok"
     p = Person(isim=isim, sehir=sehir, adres=adres, tel=tel, durum=durum)
     p.save()
-    return HttpResponse("Kaydedildi.")
+    messages.success(request, 'Kaydedildi.')
+
+    return redirect('index')
 
 def telKontrol(input):
     if len(input) > 9:
