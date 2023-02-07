@@ -4,6 +4,7 @@
 
 
 Ben İyiyim, deprem bölgelerinde bulunan insanların mevcut durumlarının güncellenebildiği ve görüntülenebildiği kullanımı basit bir platform olarak geliştirildi.
+Ayrıca hastanelerden gelen güncel hasta verilerinin veritabanına kolay aktarımını sağlayarak, veri girişi mobilitesi sağlamayı amaçlamaktadır.
 Platformun birinci önceliği en minimum internet bağlantısının olduğu noktalarda bile stabil çalışması ve bilgi aktarabilmesiydi. 
 Bu sebepten dolayı pure html,js ve css ile hiçbir kütüphane importlanmadan Frontend 'i yapıldı. Backend 'i ise Django ve Postgre ile hazırlandı.
 
