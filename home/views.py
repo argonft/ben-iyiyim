@@ -4,11 +4,11 @@ from .models import Person
 
 # Create your views here.
 def index(request):
-    return render(request, 'staticfiles/index.html')
+    return render(request, 'index.html')
 
 def report(request):
     if request.method == 'POST':
-        name = request.POST["name"]
+        isim = request.POST["isim"]
         sehir = request.POST["sehir"]
         adres = request.POST["adres"]
         durum = request.POST["durum"]
@@ -16,5 +16,6 @@ def report(request):
             tel = request.POST["tel"]
         else:
             tel = "Yok"
-    p = Person(isim=name, sehir=sehir, adres=adres, tel=tel, durum=durum)
+    p = Person(isim=isim, sehir=sehir, adres=adres, tel=tel, durum=durum)
     p.save()
+    return HttpResponse("Kaydedildi.")
