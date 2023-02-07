@@ -433,20 +433,27 @@
       }
 
       function generateCard({ isim, sehir, adres, durum, created_at }) {
-        return `
-          <div class="card">
-            <div class="card__status bold ${mapStatus(durum)}">${durum}</div>
-            <div class="card__header">
-              <span class="bold">${isim}</span>
-              <span class="bold">${sehir}</span>
-            </div>
-            <div class="card__details">
-              <span class="bold">Adres:</span>
-              <var>${adres}</var>
-              <span class="date">${formatDate(created_at)}</span>
-            </div>
+        const elem = document.createElement("div");
+
+        elem.className = "card";
+        elem.innerHTML = `
+          <div class="card__status bold ${mapStatus(durum)} field-durum"></div>
+          <div class="card__header">
+            <span class="bold field__isim"></span>
+            <span class="bold field__sehir"></span>
+          </div>
+          <div class="card__details">
+            <span class="bold">Adres:</span>
+            <var class="field__adres"></var>
+            <span class="date field__date"></span>
           </div>
         `;
+
+        elem.querySelector(".field__isim").innerText = isim;
+        elem.querySelector(".field__sehir").innerText = sehir;
+        elem.querySelector(".field__adres").innerText = adres;
+        elem.querySelector(".field__date").innerText = formatDate(created_at);
+        return elem;
       }
 
       function searchThis() {
@@ -462,7 +469,6 @@
         if (telInput.value.length > 8) {
           telVal += "tel=" + telInput.value;
         }
-        var returnData = [];
         let obj = fetch(
           "https://ben-yiyim-django-production.up.railway.app/search?" +
             nameVal +
@@ -472,13 +478,13 @@
         )
           .then((response) => response.json())
           .then((data) => {
-            returnData.push(data);
-            var searchList = "";
-            returnData[0].forEach(function (key, index) {
+            listElement.innerHTML = ""
+            data.forEach(function (key, index) {
               var { isim, sehir, adres, durum, created_at } = key.fields;
-              searchList += generateCard({ isim, sehir, adres, durum, created_at });
+              listElement.appendChild(
+                generateCard({ isim, sehir, adres, durum, created_at })
+              );
             });
-            listElement.innerHTML = searchList;
           });
       }
 
