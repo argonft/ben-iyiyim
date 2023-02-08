@@ -28,7 +28,7 @@ class Person(models.Model):
 
     DURUM_CHOICES = (
         ("iyiyim", "İyiyim"),
-        ("enkaz-altinda", "Enkaz altında değilim fakat yardıma ihtiyacım var"),
+        ("yardim", "Enkaz altında değilim fakat yardıma ihtiyacım var"),
         ("enkaz-altinda", "Enkaz altındayım"),
     )
 
