@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="images/icons/favicon.jpg" />
+    <meta name="apple-mobile-web-app-status-bar" content="#494eba" />
+    <meta name="theme-color" content="#494eba" />
     <title>Ben İyiyim</title>
     <style>
       *,
@@ -164,7 +168,7 @@
         height: 70px;
       }
 
-      input[type="submit"],
+      input[type='submit'],
       .selector button,
       .arama-butonu {
         background: #0a7b31;
@@ -177,16 +181,16 @@
         display: block;
         width: 100%;
       }
-      
-      input[type="submit"]:hover {
-            background: #25ac53;
-        }
 
-        .arama-butonu:hover {
-            background: #25ac53;
-        }
+      input[type='submit']:hover {
+        background: #25ac53;
+      }
 
-      input[type="submit"]:hover {
+      .arama-butonu:hover {
+        background: #25ac53;
+      }
+
+      input[type='submit']:hover {
         background: #25ac53;
       }
 
@@ -298,23 +302,23 @@
         <select name="sehir" id="input-sehir" required>
           <option value disabled hidden selected>Şehir Seçiniz</option>
           <option value="Adana">Adana</option>
-  <option value="Batman">Batman</option>
-  <option value="Bitlis">Bitlis</option>
-  <option value="Bingöl">Bingöl</option>
-  <option value="Diyarbakır">Diyarbakır</option>
-  <option value="Elazığ">Elazığ</option>
-  <option value="Gaziantep">Gaziantep</option>
-  <option value="Hakkari">Hakkari</option>
-  <option value="Hatay">Hatay</option>
-  <option value="Kahramanmaraş">Kahramanmaraş</option>
-  <option value="Kilis">Kilis</option>
-  <option value="Malatya">Malatya</option>
-  <option value="Mardin">Mardin</option>
-  <option value="Muş">Muş</option>
-  <option value="Osmaniye">Osmaniye</option>
-  <option value="Siirt">Siirt</option>
-  <option value="Şırnak">Şırnak</option>
-  <option value="Van">Van</option>
+          <option value="Batman">Batman</option>
+          <option value="Bitlis">Bitlis</option>
+          <option value="Bingöl">Bingöl</option>
+          <option value="Diyarbakır">Diyarbakır</option>
+          <option value="Elazığ">Elazığ</option>
+          <option value="Gaziantep">Gaziantep</option>
+          <option value="Hakkari">Hakkari</option>
+          <option value="Hatay">Hatay</option>
+          <option value="Kahramanmaraş">Kahramanmaraş</option>
+          <option value="Kilis">Kilis</option>
+          <option value="Malatya">Malatya</option>
+          <option value="Mardin">Mardin</option>
+          <option value="Muş">Muş</option>
+          <option value="Osmaniye">Osmaniye</option>
+          <option value="Siirt">Siirt</option>
+          <option value="Şırnak">Şırnak</option>
+          <option value="Van">Van</option>
         </select>
       </div>
       <div class="form-input">
@@ -374,27 +378,53 @@
     <div id="card__container"></div>
     <!----- E: ARAMA SAYFASI ---->
     <script>
-      var nameInput = document.getElementById("searchInputName");
-      var telInput = document.getElementById("searchInputTel");
-      var listElement = document.getElementById("card__container");
 
       function show(selector) {
-            if(selector =="form"){
-        document.querySelector("form").classList.toggle("open")
-        document.querySelector(".search-list").classList.remove("open")
+        document.querySelector(selector).classList.add('open');
+        document.querySelector('.selector').classList.add('hidden');
       }
-      else{
-        document.querySelector(".search-list").classList.toggle("open")
-        document.querySelector("form").classList.remove("open")
-      }
-   
+
+      var nameInput = document.getElementById('searchInputName');
+      var telInput = document.getElementById('searchInputTel');
+      var listElement = document.getElementById('card__container');
+      function searchThis() {
+        var nameVal = '';
+        var telVal = '';
+        if (
+          nameInput.value !== null ||
+          nameInput.value !== undefined ||
+          nameInput.value !== ''
+        ) {
+          nameVal += 'isim=' + nameInput.value;
+        }
+        if (telInput.value.length > 8) {
+          telVal += 'tel=' + telInput.value;
+        }
+        var returnData = [];
+        let obj = fetch(
+          'https://ben-yiyim-django-production.up.railway.app/search?' +
+            nameVal +
+            '&' +
+            telVal,
+          { mode: 'no-cors' }
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            returnData.push(data);
+            var searchList = '';
+            returnData[0].forEach(function (key, index) {
+              var { isim, sehir, adres, durum, tarih } = key.fields;
+              searchList += generateCard({ isim, sehir, adres, durum, tarih });
+            });
+            listElement.innerHTML = searchList;
+          });
       }
 
       function formatDate(dateString) {
         var date = new Date(dateString);
 
-        if (date.toString() === "Invalid Date") {
-          return "";
+        if (date.toString() === 'Invalid Date') {
+          return '';
         }
 
         date.setHours(date.getHours()); // gmt+3
@@ -409,27 +439,27 @@
 
         return (
           dateObj.hour +
-          ":" +
+          ':' +
           dateObj.mins +
-          " - " +
+          ' - ' +
           dateObj.day +
-          "/" +
+          '/' +
           dateObj.month +
-          "/" +
+          '/' +
           dateObj.year
         );
       }
 
       function mapStatus(status) {
         switch (status) {
-          case "iyiyim":
-            return "success";
-          case "enkaz-altinda-degilim-fakat-yardima-ihtiyacim-var":
-            return "warning";
-          case "enkaz-altindayim":
-            return "danger";
+          case 'iyiyim':
+            return 'success';
+          case 'enkaz-altinda-degilim-fakat-yardima-ihtiyacim-var':
+            return 'warning';
+          case 'enkaz-altindayim':
+            return 'danger';
           default:
-            return "success";
+            return 'success';
         }
       }
 

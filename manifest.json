@@ -1,0 +1,16 @@
+{
+  "name": "Ben İyiyim",
+  "short_name": "beniyiyim",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#fff",
+  "theme_color": "#fff",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/icons/favicon.jpg",
+      "type": "image/jpg",
+      "sizes": "72x72"
+    }
+  ]
+}
