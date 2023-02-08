@@ -45,16 +45,18 @@ def report(request):
         durum = escape(request.POST["durum"])
         if "tel" in request.POST:
             tel = request.POST["tel"]
-            if tel == "":
-                tel = "0000000000"
-        if telKontrol(tel) and textKontrol(isim) and textKontrol(sehir) and textKontrol(adres) and textKontrol(durum):
+            if telKontrol(tel):
+                tel = tel
+            else:
+                tel = "Yok"
+        if textKontrol(isim) and textKontrol(sehir) and textKontrol(adres) and textKontrol(durum):
             p = Person(isim=isim, sehir=sehir, adres=adres, tel=tel, durum=durum)
             p.save()
             messages.success(request, 'Kaydedildi.')
             return HttpResponse("Kaydedildi.")
         else:
             return HttpResponseBadRequest("Giriş yapılan bilgilerde desteklenmeyen karakterler var.")
-    #return redirect('index')
+    return redirect('index')
 
 def search(request):
     if request.method == "GET":
