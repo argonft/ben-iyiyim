@@ -331,10 +331,10 @@
         <select name="durum" id="input-durum" required>
           <option value disabled hidden selected>Durum Seçiniz</option>
           <option value="iyiyim">İyiyim</option>
-          <option value="enkaz-altinda-degilim-fakat-yardima-ihtiyacim-var">
+          <option value="yardim">
             Enkaz altında değilim fakat yardıma ihtiyacım var.
           </option>
-          <option value="enkaz-altindayim">Enkaz altındayım.</option>
+          <option value="enkaz-altinda">Enkaz altındayım.</option>
         </select>
       </div>
       <div class="form-input">
@@ -424,9 +424,9 @@
         switch (status) {
           case "iyiyim":
             return "success";
-          case "enkaz-altinda-degilim-fakat-yardima-ihtiyacim-var":
+          case "yardim":
             return "warning";
-          case "enkaz-altindayim":
+          case "enkaz-altinda":
             return "danger";
           default:
             return "success";
