@@ -7,7 +7,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 WORKDIR /app
 
 RUN apt-get update && apt-get upgrade -y
-RUN apt-get install git tini build-essential -y
+RUN apt-get install git tini build-essential libpq-dev gcc -y
 
 COPY . .
 RUN pip install --upgrade pip

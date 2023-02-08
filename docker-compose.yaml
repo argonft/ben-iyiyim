@@ -4,6 +4,18 @@ volumes:
   trquake_postgres: {}
 
 services:
+  database:
+    image: postgres:15.1
+    container_name: trquake-database
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=debug
+      - POSTGRES_USER=debug
+      - POSTGRES_DB=debug
+    volumes:
+      - trquake_postgres:/var/lib/postgresql/data
+
   django:
     build:
       dockerfile: Dockerfile
@@ -20,15 +32,3 @@ services:
       - PGPORT=5432
     command:
       - /start-django
-
-  database:
-    image: postgres:15.1
-    container_name: trquake-database
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=debug
-      - POSTGRES_USER=debug
-      - POSTGRES_DB=debug
-    volumes:
-      - trquake_postgres:/var/lib/postgresql/data
